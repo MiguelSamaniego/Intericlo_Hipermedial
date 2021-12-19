@@ -1,0 +1,63 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+a{
+    text-decoration: none;/* quitamos el subrayado*/
+    color:rgb(27%,38%,69%)
+}
+
+.menu{
+    list-style: none; /*quitamos el circulo de la lista*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px 10px 20px;
+}
+
+nav {
+    background: #FFEA54;
+    border-radius: 10px;
+}
+body{
+    background-image: url(../imagenes/fondoUno.png);
+   /* background-repeat: no-repeat;*/
+   
+    background-size: 100%;
+
+}
+
+img{
+    max-width: 200px;
+    max-height: 200px;
+}
+p{
+    color:rgb(71,98,176)
+}
+
+h2{
+    color:rgb(27%,38%,69%)
+}
+h1{
+    text-align: center;
+    color: #4762B0;
+}
+
+footer {
+
+   /* margin-top: 50%;*/
+    background: #FC540D;
+    background-color: #5E00E6;
+    background-color: #FEBE00;
+    border: 2px solid black;
+    width: 100%;
+    border-radius: 10px;
+    float: right;
+    display: block;
+
+}
+
+footer p{
+    padding: 0.05%;
+}

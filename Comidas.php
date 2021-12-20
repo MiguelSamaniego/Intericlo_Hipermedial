@@ -136,103 +136,20 @@ $listado = $coon->query($sentenciaSQL);
       <label class="col-form-label mt-4" for="inputDefault">Precio</label>
       <input type="text" class="form-control" name="Precio" placeholder="Precio" id="inputDefault" spellcheck="false" data-ms-editor="true">
     </div>
-
+<!--
     <div class="form-group">
       <label for="formFile" class="form-label mt-4">Ingrese una imagen</label>
       <input class="form-control"  name="Imagen" type="file" id="formFile">
     </div>  
+-->
     <br>
     <div class="btn-group" role="group" aria-label="">
                     <button type="submit" name="accion" value="Agregar" class="btn btn-success">Agregar</button>
-                    <button type="submit" name="accion" value="Modificar" class="btn btn-warning">Modificar</button>
                     <button type="submit" name="accion" value="Cancelar" class="btn btn-info">Cancelar</button>
                 </div>  
   </form>
 </div>
 </section>
-
-
-<!--
-
-<div class="col-md-5">
-
-    <div class="card">
-        <div class="card-body">
-            <h1>Ingrese el Platillo</h1>
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <fieldset>
-                        <label class="form-label mt-4" for="readOnlyInput">Codigo:</label>
-                        <input class="form-control" name="txtCodigo" id="readOnlyInput" value="<?php echo $txtCodigo; ?>" type="number" placeholder="Codigo" readonly="">
-                    </fieldset>
-                </div>
-                <div class="form-group">
-                    <label class="form-label mt-4">Ingrese el nombre del Platillo:</label>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="txtNombre" value="<?php echo $txtNombre; ?>" placeholder="nombrePlatillo">
-                        <label for="floatingInput">Nombre Platillo</label>
-                    </div>
-                    <label class="form-label mt-4">Descripcion:</label>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="txtDescripcion" value="<?php echo $txtDescripcion; ?>" placeholder="Descripcion">
-                        <label for="floatingInput">Descripcion</label>
-                    </div>
-                    <label class="form-label mt-4">Presio:</label>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="txtPresio" value="<?php echo $txtPresio; ?>" placeholder="Presio">
-                        <label for="floatingInput">Presio</label>
-                    </div>
-                    <label class="form-label mt-4">Imagen:</label> <img src="../../../img/<?php echo $txtImagne; ?>" width="70" alt="">
-                    <div class="form-floating mb-3">
-                        <input type="file" class="form-control" name="txtImagne" placeholder="Presio">
-                        <label for="floatingInput">Imagen</label>
-                    </div>
-                </div>
-                <div class="btn-group" role="group" aria-label="">
-                    <button type="submit" name="accion" <?php echo ($accion=='Selecionar')?'disabled':'';?> value="Agregar" class="btn btn-success">Agregar</button>
-                    <button type="submit" name="accion" <?php echo ($accion!='Selecionar')?'disabled':'';?> value="Modificar" class="btn btn-warning">Modificar</button>
-                    <button type="submit" name="accion" <?php echo ($accion!='Selecionar')?'disabled':'';?> value="Cancelar" class="btn btn-info">Canccelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
--->
-<div class="col-md-7">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($listado as $producto) { ?>
-                <tr>
-                    <td><?php echo $producto['pro_id']; ?></td>
-                    <td><?php echo $producto['pro_nombre']; ?></td>
-                    <td><?php echo $producto['pro_descripcion']; ?></td>
-                    <td><?php echo $producto['pro_precio']; ?></td>
-                    <td>
-                        <img src="../../../img/<?php echo $producto['pro_imagen']; ?>" width="50" alt="">
-                    </td>
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="txtCodigo" id="txtCodigo" value="<?php echo $producto['pro_id']; ?>" />
-                            <input type="submit" name="accion" value="Selecionar" class="btn btn-success">
-                            <input type="submit" name="accion" value="Borrar" class="btn btn-danger">
-                        </form>
-                    </td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-
-
 
 </div>
 </body>

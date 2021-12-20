@@ -36,13 +36,13 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Pedidos</a>
+          <a class="nav-link" href="pedidos.php">Pedidos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Ver pedidos</a>
+          <a class="nav-link" href="buscarPedidos.php">Ver pedidos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="verpedidos.html">Buscar</a>
         </li>
         
       </ul>

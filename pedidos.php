@@ -21,6 +21,8 @@
     
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
     <link rel="stylesheet" href="./css/mio.css" />
+    <link rel="stylesheet" href="./css/mio.css" />
+    <script src="buscarTarjeta.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -50,37 +52,26 @@
   <!-- inicia la tabla de pedidos  -->
   <?php
 include('conf/conexionBD.php');
-//inicio de productos 
 $txtCodigo = (isset($_POST['txtCodigo'])) ? $_POST['txtCodigo'] : "";
-//$txtCodigo = (isset($_GET['txtCodigo'])) ? $_GET['txtCodigo'] : "";
 $txtCantidad = (isset($_POST['txtCantidad'])) ? $_POST['txtCantidad'] : "";
-//$txtNombreComida = (isset($_POST['txtCantidad'])) ? $_POST['txtCantidad'] : "";
 $txtNombre = (isset($_POST['txtCliente'])) ? $_POST['txtCliente'] : "";
 $txtPresio = (isset($_POST['txtPresio'])) ? $_POST['txtPresio'] : "";
 $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
 $precio = doubleval($txtPresio);
-
+$txtObservaciones=(isset($_POST['txtObservaciones'])) ? $_POST['txtObservaciones'] : "";
 
 $sql="SELECT * FROM comida ";
 $restaurantes=$coon->query($sql);
 switch ($accion) {
     case 'Agregar':
         $subtotal= (int)($txtCantidad)*$precio;
-      //  $arreglo= array();
-      //  $arreglo= [$txtCodigo,$txtCantidad,$txtPresio,$subtotal];
         $arreglo= [$txtCantidad,$precio,$subtotal,$txtCodigo];
-        //array_push($total3s, $arreglo);
         $_SESSION['lista'][]=$arreglo;
-        //echo "aaaaaaaaaaaaaaa ".sizeof($_SESSION['lista']);
         $total3s=$_SESSION['lista'];
-        //foreach($total3s as $t){
-          //  echo "<li>$t[0]</li>";
-        //}
         break;
     case 'Comprar':
         date_default_timezone_set("America/Guayaquil");
         $fecha = date('Y-m-d');
-        echo $fecha;
         $cabSubtotal=0.0;
         $Iva=0.0;
         
@@ -88,7 +79,7 @@ switch ($accion) {
             $_SESSION['total']=$_SESSION['total']+$t[2];
         }
         $total=$_SESSION['total'];
-        $sentenciaSQL = "INSERT INTO pedido_cabecera VALUES (0,'$fecha','$txtNombre',$total,1)";
+        $sentenciaSQL = "INSERT INTO pedido_cabecera VALUES (0,'$fecha','$txtNombre',$total,1,'$txtObservaciones')";
         $Seleccionado = $coon->query($sentenciaSQL);
         if ($Seleccionado === TRUE) {
                 foreach($total3s as $t){
@@ -109,6 +100,10 @@ switch ($accion) {
         }
         break;
     case 'Cancelar':
+        $_SESSION['lista']=array();
+        $_SESSION['total']=0.0;
+        $sentenciaSQL = "SELECT * FROM comida WHERE com_codigo=$txtCodigo ";
+        $Seleccionado = $coon->query($sentenciaSQL);
         break;
     case 'Selecionar':
         $txtNombre =$txtNombre ;
@@ -133,13 +128,28 @@ switch ($accion) {
 $sentenciaSQL = "SELECT * FROM comida ";
 $listado = $coon->query($sentenciaSQL);
 ?>
+<section id="buscarT">
+        <form id="Pedidos" onsubmit="return buscarTarjeta()">
+            <br>
+            <br>
+            <div class="col-sm-10">
+                <input type="text" id="tarjeta" class="form-control" aria-describedby="emailHelp" name="tarjeta" value="" placeholder="Ingrese el  numero de la Tarjeta">
+            </div>
+            <br>
+            <br>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary" id="buscar" name="buscar" value="Buscar" onclick="buscarTarjeta()">Buscar</button>
+            </div>
+        </form>
+</section>
 <section class="producto">
+
 <div class="col-md-5">
 
     <div class="card">
         <div class="card-body">
             <h1>Ingrese el Producto</h1>
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data"  >
                 <div class="form-group">
                 </div>
                 <div class="form-group">
@@ -149,7 +159,7 @@ $listado = $coon->query($sentenciaSQL);
                         <label for="floatingInput">Cliente</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="txtNumeroTarjeta" value="" placeholder="Tarjeta">
+                        <input type="text" class="form-control" id = "tarjeta"  name="txtNumeroTarjeta" value="" placeholder="Tarjeta">
                         <label for="floatingInput">Tarjeta</label>
                     </div>
                     <div class="form-floating mb-3">
@@ -164,12 +174,17 @@ $listado = $coon->query($sentenciaSQL);
                         <input type="text" class="form-control" name="txtPresio" value="<?php echo $txtPresio; ?>" placeholder="Precio">
                         <label for="floatingInput">Precio</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="txtObservaciones" value="<?php echo $txtObservaciones; ?>" placeholder="Observaciones">
+                        <label for="floatingInput">Observaciones</label>
+                    </div>
                     
                 </div>
                 <div class="btn-group" role="group" aria-label="">
                     <button type="submit" name="accion" value="Comprar" class="btn btn-success">Comprar</button>
                     <button type="submit" name="accion"  value="Agregar" class="btn btn-success">Agregar</button>
                     <button type="submit" name="accion" value="Cancelar" class="btn btn-info">Limpiar</button>
+                    <input type="button" id="tarjeta" name="buscar" value="Buscar Tarjeta" onclick="buscarTarjeta()">
                 </div>
             </form>
         </div>
@@ -251,17 +266,18 @@ $listado = $coon->query($sentenciaSQL);
     <!-- total -->
     <thead>
             <tr class="table-light">
-                <th>TOTAL</th>
+                <th>TOTAL  </th>
             </tr>
         </thead>
         <tbody>
                 <tr class="table-primary">
 
-                    <td><?php //echo $_SESSION['total']; ?></td>
+                    <td><?php $n=$_SESSION['total']; echo "$n" ?></td>
                     
                 </tr>
         </tbody>
     </table>
 
+    
 </body>
 </html>

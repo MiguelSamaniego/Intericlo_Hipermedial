@@ -37,13 +37,9 @@
 <?php
 include('conf/conexionBD.php');
 $txtNombre = (isset($_POST['Nombre'])) ? $_POST['Nombre'] : "";
-
-//echo $txtNombre ;
 $txtPrecio = (isset($_POST['Precio'])) ? $_POST['Precio'] : "";
-//echo $txtPrecio ;
 $txtImagen = (isset($_FILES['Imagen']['name'])) ? $_FILES['Imagen']['name'] : "";
 $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
-//echo $accion ;
 $precio = doubleval($txtPrecio);
 
 switch ($accion) {

@@ -57,6 +57,7 @@ $txtCantidad = (isset($_POST['txtCantidad'])) ? $_POST['txtCantidad'] : "";
 $txtNombre = (isset($_POST['txtCliente'])) ? $_POST['txtCliente'] : "";
 $txtPresio = (isset($_POST['txtPresio'])) ? $_POST['txtPresio'] : "";
 $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
+$tarjeta = (isset($_POST['txtNumeroTarjeta'])) ? $_POST['txtNumeroTarjeta'] : "";
 $precio = doubleval($txtPresio);
 $txtObservaciones=(isset($_POST['txtObservaciones'])) ? $_POST['txtObservaciones'] : "";
 
@@ -79,8 +80,16 @@ switch ($accion) {
             $_SESSION['total']=$_SESSION['total']+$t[2];
         }
         $total=$_SESSION['total'];
-        $sentenciaSQL = "INSERT INTO pedido_cabecera VALUES (0,'$fecha','$txtNombre',$total,1,'$txtObservaciones')";
+        $sentSQL="SELECT * from tarjeta WHERE tar_numero='$tarjeta'";
+        $selec = $coon->query($sentSQL);
+        $codTar=0;
+        foreach($selec as $s){
+            $codTar=(int)($s['tar_codigo']);
+        }
+        
+        $sentenciaSQL = "INSERT INTO pedido_cabecera VALUES (0,'$fecha','$txtNombre',$total,$codTar,'$txtObservaciones')";
         $Seleccionado = $coon->query($sentenciaSQL);
+        
         if ($Seleccionado === TRUE) {
                 foreach($total3s as $t){
                     $busCod = "SELECT MAX(cab_codigo) FROM pedido_cabecera ";
@@ -95,6 +104,7 @@ switch ($accion) {
                 }
                 $_SESSION['lista']=array();
                 $_SESSION['total']=0.0;
+                header("Location:pedidos.php");
         }else{
            // echo 'NO cargo';
         }
@@ -102,8 +112,7 @@ switch ($accion) {
     case 'Cancelar':
         $_SESSION['lista']=array();
         $_SESSION['total']=0.0;
-        $sentenciaSQL = "SELECT * FROM comida WHERE com_codigo=$txtCodigo ";
-        $Seleccionado = $coon->query($sentenciaSQL);
+        header("Location:pedidos.php");
         break;
     case 'Selecionar':
         $txtNombre =$txtNombre ;
@@ -184,7 +193,6 @@ $listado = $coon->query($sentenciaSQL);
                     <button type="submit" name="accion" value="Comprar" class="btn btn-success">Comprar</button>
                     <button type="submit" name="accion"  value="Agregar" class="btn btn-success">Agregar</button>
                     <button type="submit" name="accion" value="Cancelar" class="btn btn-info">Limpiar</button>
-                    <input type="button" id="tarjeta" name="buscar" value="Buscar Tarjeta" onclick="buscarTarjeta()">
                 </div>
             </form>
         </div>
@@ -255,7 +263,6 @@ $listado = $coon->query($sentenciaSQL);
                         <form method="POST">
                             <input type="hidden" name="txtCodigo" id="txtCodigo" value="<?php echo $res['com_codigo']; ?>" />
                             <input type="hidden" name="txtprecio" id="txtPresio" value="<?php echo $res['com_precio']; ?>" />
-                            <input type="submit" name="accion" value="Selecionar" class="btn btn-success">
                         </form>
                     </td>
                 </tr>
@@ -272,7 +279,13 @@ $listado = $coon->query($sentenciaSQL);
         <tbody>
                 <tr class="table-primary">
 
-                    <td><?php $n=$_SESSION['total']; echo "$n" ?></td>
+                    <td><?php
+                    $var=0.0;
+                     foreach($total3s as $t){
+                        $var=$var+$t[2];
+                    }
+                    echo $var;
+                     ?></td>
                     
                 </tr>
         </tbody>
